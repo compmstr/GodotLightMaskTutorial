@@ -1,3 +1,15 @@
+* UV coordinates across a whole tilemap
+
+By default, the UV coordinates in a shader when processing a tilemap are the UV
+coordinates within the individual tile's texture region, and not a coordinate
+based on the entirety of the tilemap.
+
+I'm currently working on a way to calculate the UV where the tilemap itself
+would be 0.0 -> 1.0, instead of each tile.
+
+My current approach is to pass in the viewport position and size, as well as the
+tilemap position and size, and work out the conversion from there.
+
 * Light Mask Tutorial
 
 ** Steps

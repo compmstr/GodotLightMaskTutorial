@@ -1,12 +1,20 @@
-[gd_scene load_steps=21 format=3 uid="uid://dxe2gvarmbbr1"]
+[gd_scene load_steps=23 format=3 uid="uid://cp6rly5woih4g"]
 
 [ext_resource type="TileSet" uid="uid://dflfwe6mycxjp" path="res://Assets/kenny_dungeon_tiles.tres" id="1_6qfjf"]
 [ext_resource type="Script" path="res://Scripts/light_mask_tutorial.gd" id="1_n50in"]
 [ext_resource type="Texture2D" uid="uid://ccx44360bhoj7" path="res://Assets/tilemap_packed.png" id="1_sqgu7"]
+[ext_resource type="Shader" path="res://Shaders/tile_map_test.gdshader" id="2_04352"]
 [ext_resource type="Shader" path="res://Shaders/all_white.gdshader" id="3_5vrm1"]
 [ext_resource type="Shader" path="res://Shaders/masked_texture.gdshader" id="3_p5okn"]
 [ext_resource type="Script" path="res://Scripts/Player.gd" id="4_jdj50"]
 [ext_resource type="PackedScene" uid="uid://dmqckgbdex027" path="res://Scenes/lit_view.tscn" id="5_d05ya"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4o2xh"]
+shader = ExtResource("2_04352")
+shader_parameter/screen_size = null
+shader_parameter/screen_start = null
+shader_parameter/tilemap_size = null
+shader_parameter/tilemap_start = null
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_v527p"]
 viewport_path = NodePath("VisibilityTest")
@@ -15,6 +23,7 @@ viewport_path = NodePath("VisibilityTest")
 resource_local_to_scene = true
 shader = ExtResource("3_p5okn")
 shader_parameter/mask_texture = SubResource("ViewportTexture_v527p")
+shader_parameter/mask_with_alpha = false
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_wt55u"]
 viewport_path = NodePath("LitViewViewport")
@@ -32,14 +41,14 @@ viewport_path = NodePath("VisibilityTest")
 shader = ExtResource("3_5vrm1")
 
 [sub_resource type="Gradient" id="Gradient_4ms4j"]
-interpolation_mode = 1
-offsets = PackedFloat32Array(0.311927, 0.678899)
+interpolation_mode = 2
+offsets = PackedFloat32Array(0.394958, 0.714286)
 colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_p3pob"]
 gradient = SubResource("Gradient_4ms4j")
-width = 512
-height = 512
+width = 256
+height = 256
 fill = 1
 fill_from = Vector2(0.5, 0.5)
 
@@ -66,6 +75,7 @@ script = ExtResource("1_n50in")
 
 [node name="TileMap" type="TileMap" parent="."]
 modulate = Color(0.12549, 0.12549, 0.12549, 1)
+material = SubResource("ShaderMaterial_4o2xh")
 tile_set = ExtResource("1_6qfjf")
 format = 2
 layer_0/name = "Floor"
@@ -88,6 +98,7 @@ visible = false
 color = Color(0.12549, 0.12549, 0.12549, 1)
 
 [node name="LitViewDebug" type="Sprite2D" parent="."]
+visible = false
 modulate = Color(1, 1, 1, 0.396078)
 material = SubResource("CanvasItemMaterial_pxieu")
 position = Vector2(3, 42)
@@ -95,6 +106,7 @@ scale = Vector2(0.1, 0.1)
 texture = SubResource("ViewportTexture_d48wc")
 
 [node name="VisViewDebug" type="Sprite2D" parent="."]
+visible = false
 modulate = Color(1, 1, 1, 0.34902)
 material = SubResource("CanvasItemMaterial_pxieu")
 position = Vector2(-38, 29)
