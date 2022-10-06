@@ -1,0 +1,108 @@
+* Light Mask Tutorial
+
+** Steps
+
+  1) Set up tilemap
+     - Add occlisions in TileSet
+     - Draw Map
+     - Add some lights
+       - I just set up with a radial gradient texture
+       - With sprites as well
+  2) Duplicate that tilemap twice
+  3) Put each duplicate in their own SubViewport
+     - Make sure each SubViewport has ~Render Target -> Update Mode~ set to
+       ~Always~, otherwise they won't update as you play
+     - Make sure each SubViewport has the same size as the main viewport
+       + Will probably need a script to listen to viewport size changed events
+     - One viewport (LitView) will also get the lights
+       - The 'main' viewport tilemap should have the light sprites, but not the
+         lights themselves
+     - The 2nd viewport (VisibilityTest) just gets the tilemap
+  4) Set up all_white shader on VisibilityTest
+  5) Add a light in Subtract mode on VisibilityTest where the player would be
+
+** Script
+
+Today we're going to go over a way to have Light2Ds set up to where you can only
+see the lit areas if the character has line of sight to the lit area.
+
+This tutorial is done in Godot 4 beta2, so there are some visual glitches in the
+editor itself.
+
+The in-editor preview does work on occation, but the game itself works fine.
+
+This is what the scene looks like as it runs
+
+You can see the debug views into the lit map and the masking map on the left
+here
+
+When I move over here, you can still see the lit area coming out of the doorway,
+but the lit area itself is not visible until I go in front of the door.
+
+For the barrels, you can see the shadows from the light compared to the shadows
+from the non-visible area
+
+The masking is accomplished by masking a one ViewportTexture with another.
+
+I've set up a three copies of the same tilemap to demonstrate this.
+
+The first copy is in the main scene, and is modulated to be pretty dark.
+
+This copy is similar to a revealed fog of war area, so it can either be left
+out to just show darkness like so *toggle visibility here*
+
+Or, it could potentially be built up as the player sees each tile.  That work
+would be beyond this tutorial though.
+
+The second and third copies are each under their own SubViewport
+
+Each SubViewport will need to have the same width/height as the main viewport.
+
+They also need to have transparent background selected, and they need to be set
+to 'Always' update
+
+The second copy is set up as it's own scene in this example, the LitViewScene.
+
+This scene is most like what a regular gameplay map would be, it has all of the
+tiles, and all of the Light2ds
+
+The third copy is set up with just the tilemap, and a light to represent the
+player's view area.
+
+This third copy is called VisibilityTest, as it will generate a visibility mask
+for the player, using the shadow occluders on the tilemap
+
+To get the mask set up, first we set up a ShaderMaterial for the tilemap that
+turns all of the pixel colors white.
+
+Then, for the light on the visibilityTest, we set the texture to a gradient with
+a constant falloff big enough for the player's view.
+
+We set the lighting mode to subtract, and the power to around 3 so that we get a
+black area where the player would be able to see, and white where they can't.
+
+We also need to make sure to enable shadows on all of these lights.
+
+We need to make sure that the visibility moves along with the player, so in the
+player script, we have an exported Node2D reference that points to the
+Visibility test light, and we update the position of the light whenever the
+player moves.
+
+For the actual masking, we'll need to display the main map view as a Sprite.
+
+We set the texture for the sprite to a ViewportTexture, pointing to the
+LitViewViewport.
+
+Notice for these viewport textures we need to enable 'Local to scene'.  Godot
+will complain if that's not properly set up.
+
+We'll need to set up a new shader material for the masked scene.
+
+This shader will use a uniform sampler2D which is the masking texture.
+
+The masking is done by setting the alpha of the output color to 0.0 if the mask
+is brighter than 0.5.  Since the mask is pretty much black and white, this works
+pretty well in my experience.
+
+I'll have this code uploaded to github, with a link in the description for if
+you want to check it out yourself.
