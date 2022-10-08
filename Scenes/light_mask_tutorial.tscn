@@ -1,56 +1,60 @@
-[gd_scene load_steps=23 format=3 uid="uid://cp6rly5woih4g"]
+[gd_scene load_steps=27 format=3 uid="uid://cp6rly5woih4g"]
 
 [ext_resource type="TileSet" uid="uid://dflfwe6mycxjp" path="res://Assets/kenny_dungeon_tiles.tres" id="1_6qfjf"]
 [ext_resource type="Script" path="res://Scripts/light_mask_tutorial.gd" id="1_n50in"]
 [ext_resource type="Texture2D" uid="uid://ccx44360bhoj7" path="res://Assets/tilemap_packed.png" id="1_sqgu7"]
-[ext_resource type="Shader" path="res://Shaders/tile_map_test.gdshader" id="2_04352"]
 [ext_resource type="Shader" path="res://Shaders/all_white.gdshader" id="3_5vrm1"]
 [ext_resource type="Shader" path="res://Shaders/masked_texture.gdshader" id="3_p5okn"]
+[ext_resource type="Shader" path="res://Shaders/tile_map_test.gdshader" id="3_qqk30"]
 [ext_resource type="Script" path="res://Scripts/Player.gd" id="4_jdj50"]
-[ext_resource type="PackedScene" uid="uid://dmqckgbdex027" path="res://Scenes/lit_view.tscn" id="5_d05ya"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_4o2xh"]
-shader = ExtResource("2_04352")
+[sub_resource type="ViewportTexture" id="ViewportTexture_pqvab"]
+viewport_path = NodePath("VisibilityViewport")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ja0ov"]
+resource_local_to_scene = true
+shader = ExtResource("3_qqk30")
+shader_parameter/mask_size = null
+shader_parameter/mask_texture = SubResource("ViewportTexture_pqvab")
 shader_parameter/screen_size = null
 shader_parameter/screen_start = null
-shader_parameter/tilemap_size = null
 shader_parameter/tilemap_start = null
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_v527p"]
-viewport_path = NodePath("VisibilityTest")
+[sub_resource type="ViewportTexture" id="ViewportTexture_36l84"]
+viewport_path = NodePath("VisibilityViewport")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_b0mx3"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1cg6l"]
 resource_local_to_scene = true
 shader = ExtResource("3_p5okn")
-shader_parameter/mask_texture = SubResource("ViewportTexture_v527p")
+shader_parameter/mask_texture = SubResource("ViewportTexture_36l84")
 shader_parameter/mask_with_alpha = false
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_wt55u"]
-viewport_path = NodePath("LitViewViewport")
+[sub_resource type="ViewportTexture" id="ViewportTexture_ni5ig"]
+viewport_path = NodePath("LitView")
 
-[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_pxieu"]
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_e4cgb"]
 light_mode = 1
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_d48wc"]
-viewport_path = NodePath("LitViewViewport")
+[sub_resource type="ViewportTexture" id="ViewportTexture_bw0wx"]
+viewport_path = NodePath("VisibilityViewport")
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_wpj6o"]
-viewport_path = NodePath("VisibilityTest")
+[sub_resource type="ViewportTexture" id="ViewportTexture_7y1ah"]
+viewport_path = NodePath("LitView")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_h7gmc"]
-shader = ExtResource("3_5vrm1")
-
-[sub_resource type="Gradient" id="Gradient_4ms4j"]
-interpolation_mode = 2
-offsets = PackedFloat32Array(0.394958, 0.714286)
+[sub_resource type="Gradient" id="Gradient_h63gk"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0.193277, 0.663866)
 colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_p3pob"]
-gradient = SubResource("Gradient_4ms4j")
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_v0s8o"]
+gradient = SubResource("Gradient_h63gk")
 width = 256
 height = 256
 fill = 1
 fill_from = Vector2(0.5, 0.5)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3qy4k"]
+shader = ExtResource("3_5vrm1")
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_7nfjy"]
 atlas = ExtResource("1_sqgu7")
@@ -69,13 +73,35 @@ gradient = SubResource("Gradient_cg820")
 fill = 1
 fill_from = Vector2(0.5, 0.5)
 
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_w0n04"]
+light_mode = 1
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bqsx7"]
+atlas = ExtResource("1_sqgu7")
+region = Rect2(80, 160, 14.7454, 14.9677)
+
+[sub_resource type="Gradient" id="Gradient_aal67"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0, 0.752294)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_cl040"]
+gradient = SubResource("Gradient_aal67")
+width = 128
+height = 128
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
 [node name="LightMaskTutorial" type="Node2D"]
 y_sort_enabled = true
 script = ExtResource("1_n50in")
 
+[node name="Camera2d" type="Camera2D" parent="."]
+current = true
+smoothing_enabled = true
+
 [node name="TileMap" type="TileMap" parent="."]
 modulate = Color(0.12549, 0.12549, 0.12549, 1)
-material = SubResource("ShaderMaterial_4o2xh")
 tile_set = ExtResource("1_6qfjf")
 format = 2
 layer_0/name = "Floor"
@@ -88,46 +114,8 @@ layer_1/y_sort_origin = 0
 layer_1/z_index = 0
 layer_1/tile_data = PackedInt32Array(0, 720896, 65540, 1, 720896, 65540, 2, 720896, 65540, 3, 720896, 65540, 4, 720896, 65540, 5, 720896, 65540, 6, 720896, 65540, 7, 720896, 65540, 8, 720896, 65540, 9, 720896, 65540, 10, 720896, 65540, 11, 720896, 65540, 12, 720896, 65540, 13, 720896, 65540, 14, 720896, 65540, 15, 720896, 65540, 16, 720896, 65540, 17, 720896, 65540, 18, 720896, 65540, 19, 720896, 65540, 20, 720896, 65540, 21, 720896, 65540, 65536, 720896, 4, 131072, 720896, 4, 196608, 720896, 4, 262144, 720896, 4, 327680, 720896, 4, 393216, 720896, 4, 458752, 720896, 4, 524288, 720896, 4, 589824, 720896, 4, 655360, 720896, 4, 720896, 720896, 4, 786432, 720896, 4, 65557, 589824, 4, 131093, 589824, 4, 196629, 589824, 4, 262165, 589824, 4, 327701, 589824, 4, 393237, 589824, 4, 458773, 589824, 4, 524309, 589824, 4, 589845, 589824, 4, 655381, 589824, 4, 720917, 589824, 4, 786453, 589824, 4, 786433, 589824, 65540, 786434, 589824, 65540, 786435, 589824, 65540, 786436, 589824, 65540, 786437, 589824, 65540, 786438, 589824, 65540, 786439, 589824, 65540, 786440, 589824, 65540, 786441, 589824, 65540, 786442, 589824, 65540, 786443, 589824, 65540, 786444, 589824, 65540, 786445, 589824, 65540, 786446, 589824, 65540, 786447, 589824, 65540, 786448, 589824, 65540, 786449, 589824, 65540, 786450, 589824, 65540, 786451, 589824, 65540, 786452, 589824, 65540, 65551, 655360, 4, 131087, 655360, 4, 196623, 655360, 4, 262159, 655360, 4, 327695, 655360, 4, 393231, 655360, 65540, 393232, 655360, 65540, 393233, 589824, 0, 393234, 655360, 65540, 393235, 655360, 65540, 393236, 655360, 65540, 720903, 655360, 4, 655367, 655360, 4, 589831, 655360, 4, 524295, 655360, 4, 458759, 655360, 4, 458758, 655360, 65540, 458757, 655360, 65540, 458753, 655360, 65540, 458754, 655360, 65540, 458756, 720896, 0, 458755, 655360, 0, 196616, 655360, 6, 589837, 655360, 6, 393227, 655360, 6, 196617, 0, 6, 196618, 65536, 6)
 
-[node name="MaskedLitView" type="Sprite2D" parent="."]
-material = SubResource("ShaderMaterial_b0mx3")
-texture = SubResource("ViewportTexture_wt55u")
-centered = false
-
-[node name="CanvasModulate" type="CanvasModulate" parent="."]
-visible = false
-color = Color(0.12549, 0.12549, 0.12549, 1)
-
-[node name="LitViewDebug" type="Sprite2D" parent="."]
-visible = false
-modulate = Color(1, 1, 1, 0.396078)
-material = SubResource("CanvasItemMaterial_pxieu")
-position = Vector2(3, 42)
-scale = Vector2(0.1, 0.1)
-texture = SubResource("ViewportTexture_d48wc")
-
-[node name="VisViewDebug" type="Sprite2D" parent="."]
-visible = false
-modulate = Color(1, 1, 1, 0.34902)
-material = SubResource("CanvasItemMaterial_pxieu")
-position = Vector2(-38, 29)
-scale = Vector2(0.1, 0.1)
-texture = SubResource("ViewportTexture_wpj6o")
-centered = false
-
-[node name="LitViewViewport" type="SubViewport" parent="."]
-transparent_bg = true
-size = Vector2i(800, 800)
-render_target_update_mode = 4
-
-[node name="LitView" parent="LitViewViewport" instance=ExtResource("5_d05ya")]
-
-[node name="VisibilityTest" type="SubViewport" parent="."]
-transparent_bg = true
-size = Vector2i(800, 800)
-render_target_update_mode = 4
-
-[node name="VisibilityTestMap" type="TileMap" parent="VisibilityTest"]
-material = SubResource("ShaderMaterial_h7gmc")
+[node name="MaskedView" type="TileMap" parent="."]
+material = SubResource("ShaderMaterial_ja0ov")
 tile_set = ExtResource("1_6qfjf")
 format = 2
 layer_0/name = "Floor"
@@ -140,30 +128,133 @@ layer_1/y_sort_origin = 0
 layer_1/z_index = 0
 layer_1/tile_data = PackedInt32Array(0, 720896, 65540, 1, 720896, 65540, 2, 720896, 65540, 3, 720896, 65540, 4, 720896, 65540, 5, 720896, 65540, 6, 720896, 65540, 7, 720896, 65540, 8, 720896, 65540, 9, 720896, 65540, 10, 720896, 65540, 11, 720896, 65540, 12, 720896, 65540, 13, 720896, 65540, 14, 720896, 65540, 15, 720896, 65540, 16, 720896, 65540, 17, 720896, 65540, 18, 720896, 65540, 19, 720896, 65540, 20, 720896, 65540, 21, 720896, 65540, 65536, 720896, 4, 131072, 720896, 4, 196608, 720896, 4, 262144, 720896, 4, 327680, 720896, 4, 393216, 720896, 4, 458752, 720896, 4, 524288, 720896, 4, 589824, 720896, 4, 655360, 720896, 4, 720896, 720896, 4, 786432, 720896, 4, 65557, 589824, 4, 131093, 589824, 4, 196629, 589824, 4, 262165, 589824, 4, 327701, 589824, 4, 393237, 589824, 4, 458773, 589824, 4, 524309, 589824, 4, 589845, 589824, 4, 655381, 589824, 4, 720917, 589824, 4, 786453, 589824, 4, 786433, 589824, 65540, 786434, 589824, 65540, 786435, 589824, 65540, 786436, 589824, 65540, 786437, 589824, 65540, 786438, 589824, 65540, 786439, 589824, 65540, 786440, 589824, 65540, 786441, 589824, 65540, 786442, 589824, 65540, 786443, 589824, 65540, 786444, 589824, 65540, 786445, 589824, 65540, 786446, 589824, 65540, 786447, 589824, 65540, 786448, 589824, 65540, 786449, 589824, 65540, 786450, 589824, 65540, 786451, 589824, 65540, 786452, 589824, 65540, 65551, 655360, 4, 131087, 655360, 4, 196623, 655360, 4, 262159, 655360, 4, 327695, 655360, 4, 393231, 655360, 65540, 393232, 655360, 65540, 393233, 589824, 0, 393234, 655360, 65540, 393235, 655360, 65540, 393236, 655360, 65540, 720903, 655360, 4, 655367, 655360, 4, 589831, 655360, 4, 524295, 655360, 4, 458759, 655360, 4, 458758, 655360, 65540, 458757, 655360, 65540, 458753, 655360, 65540, 458754, 655360, 65540, 458756, 720896, 0, 458755, 655360, 0, 196616, 655360, 6, 589837, 655360, 6, 393227, 655360, 6, 196617, 0, 6, 196618, 65536, 6)
 
-[node name="VisibilitySource" type="PointLight2D" parent="VisibilityTest"]
-energy = 4.0
+[node name="LitViewSprite" type="Sprite2D" parent="."]
+visible = false
+material = SubResource("ShaderMaterial_1cg6l")
+texture = SubResource("ViewportTexture_ni5ig")
+centered = false
+
+[node name="LightDebugView" type="Sprite2D" parent="."]
+visible = false
+material = SubResource("CanvasItemMaterial_e4cgb")
+position = Vector2(-1, 46)
+scale = Vector2(0.1, 0.1)
+texture = SubResource("ViewportTexture_bw0wx")
+
+[node name="LitDebugView" type="Sprite2D" parent="."]
+visible = false
+material = SubResource("CanvasItemMaterial_e4cgb")
+position = Vector2(0, 74)
+scale = Vector2(0.1, 0.1)
+texture = SubResource("ViewportTexture_7y1ah")
+
+[node name="VisibilityViewport" type="SubViewport" parent="."]
+transparent_bg = true
+size = Vector2i(400, 400)
+render_target_update_mode = 4
+
+[node name="PointLight2d" type="PointLight2D" parent="VisibilityViewport"]
+position = Vector2(144, 89)
+energy = 2.93
 blend_mode = 1
 shadow_enabled = true
-texture = SubResource("GradientTexture2D_p3pob")
+texture = SubResource("GradientTexture2D_v0s8o")
 
-[node name="Player" type="CharacterBody2D" parent="." node_paths=PackedStringArray("linked_position_node")]
+[node name="VisibilityMap" type="TileMap" parent="VisibilityViewport"]
+material = SubResource("ShaderMaterial_3qy4k")
+tile_set = ExtResource("1_6qfjf")
+format = 2
+layer_0/name = "Floor"
+layer_0/tile_data = PackedInt32Array(65537, 0, 4, 131073, 0, 4, 196609, 0, 4, 262145, 0, 4, 327681, 0, 4, 393217, 0, 4, 458753, 0, 4, 524289, 0, 4, 589825, 0, 4, 655361, 0, 4, 720897, 0, 4, 786433, 0, 4, 65538, 0, 4, 131074, 0, 4, 196610, 0, 4, 262146, 0, 4, 327682, 0, 4, 393218, 0, 4, 458754, 0, 4, 524290, 0, 4, 589826, 0, 4, 655362, 0, 4, 720898, 0, 4, 786434, 0, 4, 65539, 0, 4, 131075, 0, 4, 196611, 0, 4, 262147, 0, 4, 327683, 0, 4, 393219, 0, 4, 458755, 0, 4, 524291, 0, 4, 589827, 0, 4, 655363, 0, 4, 720899, 0, 4, 786435, 0, 4, 65540, 0, 4, 131076, 0, 4, 196612, 0, 4, 262148, 0, 4, 327684, 0, 4, 393220, 0, 4, 458756, 0, 4, 524292, 0, 4, 589828, 0, 4, 655364, 0, 4, 720900, 0, 4, 786436, 0, 4, 65541, 0, 4, 131077, 0, 4, 196613, 0, 4, 262149, 0, 4, 327685, 0, 4, 393221, 0, 4, 458757, 0, 4, 524293, 0, 4, 589829, 0, 4, 655365, 0, 4, 720901, 0, 4, 786437, 0, 4, 65542, 0, 4, 131078, 0, 4, 196614, 0, 4, 262150, 0, 4, 327686, 0, 4, 393222, 0, 4, 458758, 0, 4, 524294, 0, 4, 589830, 0, 4, 655366, 0, 4, 720902, 0, 4, 786438, 0, 4, 65543, 0, 4, 131079, 0, 4, 196615, 0, 4, 262151, 0, 4, 327687, 0, 4, 393223, 0, 4, 458759, 0, 4, 524295, 0, 4, 589831, 0, 4, 655367, 0, 4, 720903, 0, 4, 786439, 0, 4, 65544, 0, 4, 131080, 0, 4, 196616, 0, 4, 262152, 0, 4, 327688, 0, 4, 393224, 0, 4, 458760, 0, 4, 524296, 0, 4, 589832, 0, 4, 655368, 0, 4, 720904, 0, 4, 786440, 0, 4, 65545, 0, 4, 131081, 0, 4, 196617, 0, 4, 262153, 0, 4, 327689, 0, 4, 393225, 0, 4, 458761, 0, 4, 524297, 0, 4, 589833, 0, 4, 655369, 0, 4, 720905, 0, 4, 786441, 0, 4, 65546, 0, 4, 131082, 0, 4, 196618, 0, 4, 262154, 0, 4, 327690, 0, 4, 393226, 0, 4, 458762, 0, 4, 524298, 0, 4, 589834, 0, 4, 655370, 0, 4, 720906, 0, 4, 786442, 0, 4, 65547, 0, 4, 131083, 0, 4, 196619, 0, 4, 262155, 0, 4, 327691, 0, 4, 393227, 0, 4, 458763, 0, 4, 524299, 0, 4, 589835, 0, 4, 655371, 0, 4, 720907, 0, 4, 786443, 0, 4, 65548, 0, 4, 131084, 0, 4, 196620, 0, 4, 262156, 0, 4, 327692, 0, 4, 393228, 0, 4, 458764, 0, 4, 524300, 0, 4, 589836, 0, 4, 655372, 0, 4, 720908, 0, 4, 786444, 0, 4, 65549, 0, 4, 131085, 0, 4, 196621, 0, 4, 262157, 0, 4, 327693, 0, 4, 393229, 0, 4, 458765, 0, 4, 524301, 0, 4, 589837, 0, 4, 655373, 0, 4, 720909, 0, 4, 786445, 0, 4, 65550, 0, 4, 131086, 0, 4, 196622, 0, 4, 262158, 0, 4, 327694, 0, 4, 393230, 0, 4, 458766, 0, 4, 524302, 0, 4, 589838, 0, 4, 655374, 0, 4, 720910, 0, 4, 786446, 0, 4, 65551, 0, 4, 131087, 0, 4, 196623, 0, 4, 262159, 0, 4, 327695, 0, 4, 393231, 0, 4, 458767, 0, 4, 524303, 0, 4, 589839, 0, 4, 655375, 0, 4, 720911, 0, 4, 786447, 0, 4, 65552, 0, 4, 131088, 0, 4, 196624, 0, 4, 262160, 0, 4, 327696, 0, 4, 393232, 0, 4, 458768, 0, 4, 524304, 0, 4, 589840, 0, 4, 655376, 0, 4, 720912, 0, 4, 786448, 0, 4, 65553, 0, 4, 131089, 0, 4, 196625, 0, 4, 262161, 0, 4, 327697, 0, 4, 393233, 0, 4, 458769, 0, 4, 524305, 0, 4, 589841, 0, 4, 655377, 0, 4, 720913, 0, 4, 786449, 0, 4, 65554, 0, 4, 131090, 0, 4, 196626, 0, 4, 262162, 0, 4, 327698, 0, 4, 393234, 0, 4, 458770, 0, 4, 524306, 0, 4, 589842, 0, 4, 655378, 0, 4, 720914, 0, 4, 786450, 0, 4, 65555, 0, 4, 131091, 0, 4, 196627, 0, 4, 262163, 0, 4, 327699, 0, 4, 393235, 0, 4, 458771, 0, 4, 524307, 0, 4, 589843, 0, 4, 655379, 0, 4, 720915, 0, 4, 786451, 0, 4, 65556, 0, 4, 131092, 0, 4, 196628, 0, 4, 262164, 0, 4, 327700, 0, 4, 393236, 0, 4, 458772, 0, 4, 524308, 0, 4, 589844, 0, 4, 655380, 0, 4, 720916, 0, 4, 786452, 0, 4, 65557, 0, 4, 131093, 0, 4, 196629, 0, 4, 262165, 0, 4, 327701, 0, 4, 393237, 0, 4, 458773, 0, 4, 524309, 0, 4, 589845, 0, 4, 655381, 0, 4, 720917, 0, 4, 786453, 0, 4, 0, 0, 4, 65536, 0, 4, 131072, 0, 4, 196608, 0, 4, 262144, 0, 4, 327680, 0, 4, 393216, 0, 4, 458752, 0, 4, 524288, 0, 4, 589824, 0, 4, 655360, 0, 4, 720896, 0, 4, 786432, 0, 4, 1, 0, 4, 2, 0, 4, 3, 0, 4, 4, 0, 4, 5, 0, 4, 6, 0, 4, 7, 0, 4, 8, 0, 4, 9, 0, 4, 10, 0, 4, 11, 0, 4, 12, 0, 4, 13, 0, 4, 14, 0, 4, 15, 0, 4, 16, 0, 4, 17, 0, 4, 18, 0, 4, 19, 0, 4, 20, 0, 4, 21, 0, 4)
+layer_1/name = "Walls"
+layer_1/enabled = true
+layer_1/modulate = Color(1, 1, 1, 1)
+layer_1/y_sort_enabled = false
+layer_1/y_sort_origin = 0
+layer_1/z_index = 0
+layer_1/tile_data = PackedInt32Array(0, 720896, 65540, 1, 720896, 65540, 2, 720896, 65540, 3, 720896, 65540, 4, 720896, 65540, 5, 720896, 65540, 6, 720896, 65540, 7, 720896, 65540, 8, 720896, 65540, 9, 720896, 65540, 10, 720896, 65540, 11, 720896, 65540, 12, 720896, 65540, 13, 720896, 65540, 14, 720896, 65540, 15, 720896, 65540, 16, 720896, 65540, 17, 720896, 65540, 18, 720896, 65540, 19, 720896, 65540, 20, 720896, 65540, 21, 720896, 65540, 65536, 720896, 4, 131072, 720896, 4, 196608, 720896, 4, 262144, 720896, 4, 327680, 720896, 4, 393216, 720896, 4, 458752, 720896, 4, 524288, 720896, 4, 589824, 720896, 4, 655360, 720896, 4, 720896, 720896, 4, 786432, 720896, 4, 65557, 589824, 4, 131093, 589824, 4, 196629, 589824, 4, 262165, 589824, 4, 327701, 589824, 4, 393237, 589824, 4, 458773, 589824, 4, 524309, 589824, 4, 589845, 589824, 4, 655381, 589824, 4, 720917, 589824, 4, 786453, 589824, 4, 786433, 589824, 65540, 786434, 589824, 65540, 786435, 589824, 65540, 786436, 589824, 65540, 786437, 589824, 65540, 786438, 589824, 65540, 786439, 589824, 65540, 786440, 589824, 65540, 786441, 589824, 65540, 786442, 589824, 65540, 786443, 589824, 65540, 786444, 589824, 65540, 786445, 589824, 65540, 786446, 589824, 65540, 786447, 589824, 65540, 786448, 589824, 65540, 786449, 589824, 65540, 786450, 589824, 65540, 786451, 589824, 65540, 786452, 589824, 65540, 65551, 655360, 4, 131087, 655360, 4, 196623, 655360, 4, 262159, 655360, 4, 327695, 655360, 4, 393231, 655360, 65540, 393232, 655360, 65540, 393233, 589824, 0, 393234, 655360, 65540, 393235, 655360, 65540, 393236, 655360, 65540, 720903, 655360, 4, 655367, 655360, 4, 589831, 655360, 4, 524295, 655360, 4, 458759, 655360, 4, 458758, 655360, 65540, 458757, 655360, 65540, 458753, 655360, 65540, 458754, 655360, 65540, 458756, 720896, 0, 458755, 655360, 0, 196616, 655360, 6, 589837, 655360, 6, 393227, 655360, 6, 196617, 0, 6, 196618, 65536, 6)
+
+[node name="LitView" type="SubViewport" parent="."]
+transparent_bg = true
+size = Vector2i(800, 800)
+render_target_update_mode = 4
+
+[node name="LitViewMap" type="TileMap" parent="LitView"]
+tile_set = ExtResource("1_6qfjf")
+format = 2
+layer_0/name = "Floor"
+layer_0/tile_data = PackedInt32Array(65537, 0, 4, 131073, 0, 4, 196609, 0, 4, 262145, 0, 4, 327681, 0, 4, 393217, 0, 4, 458753, 0, 4, 524289, 0, 4, 589825, 0, 4, 655361, 0, 4, 720897, 0, 4, 786433, 0, 4, 65538, 0, 4, 131074, 0, 4, 196610, 0, 4, 262146, 0, 4, 327682, 0, 4, 393218, 0, 4, 458754, 0, 4, 524290, 0, 4, 589826, 0, 4, 655362, 0, 4, 720898, 0, 4, 786434, 0, 4, 65539, 0, 4, 131075, 0, 4, 196611, 0, 4, 262147, 0, 4, 327683, 0, 4, 393219, 0, 4, 458755, 0, 4, 524291, 0, 4, 589827, 0, 4, 655363, 0, 4, 720899, 0, 4, 786435, 0, 4, 65540, 0, 4, 131076, 0, 4, 196612, 0, 4, 262148, 0, 4, 327684, 0, 4, 393220, 0, 4, 458756, 0, 4, 524292, 0, 4, 589828, 0, 4, 655364, 0, 4, 720900, 0, 4, 786436, 0, 4, 65541, 0, 4, 131077, 0, 4, 196613, 0, 4, 262149, 0, 4, 327685, 0, 4, 393221, 0, 4, 458757, 0, 4, 524293, 0, 4, 589829, 0, 4, 655365, 0, 4, 720901, 0, 4, 786437, 0, 4, 65542, 0, 4, 131078, 0, 4, 196614, 0, 4, 262150, 0, 4, 327686, 0, 4, 393222, 0, 4, 458758, 0, 4, 524294, 0, 4, 589830, 0, 4, 655366, 0, 4, 720902, 0, 4, 786438, 0, 4, 65543, 0, 4, 131079, 0, 4, 196615, 0, 4, 262151, 0, 4, 327687, 0, 4, 393223, 0, 4, 458759, 0, 4, 524295, 0, 4, 589831, 0, 4, 655367, 0, 4, 720903, 0, 4, 786439, 0, 4, 65544, 0, 4, 131080, 0, 4, 196616, 0, 4, 262152, 0, 4, 327688, 0, 4, 393224, 0, 4, 458760, 0, 4, 524296, 0, 4, 589832, 0, 4, 655368, 0, 4, 720904, 0, 4, 786440, 0, 4, 65545, 0, 4, 131081, 0, 4, 196617, 0, 4, 262153, 0, 4, 327689, 0, 4, 393225, 0, 4, 458761, 0, 4, 524297, 0, 4, 589833, 0, 4, 655369, 0, 4, 720905, 0, 4, 786441, 0, 4, 65546, 0, 4, 131082, 0, 4, 196618, 0, 4, 262154, 0, 4, 327690, 0, 4, 393226, 0, 4, 458762, 0, 4, 524298, 0, 4, 589834, 0, 4, 655370, 0, 4, 720906, 0, 4, 786442, 0, 4, 65547, 0, 4, 131083, 0, 4, 196619, 0, 4, 262155, 0, 4, 327691, 0, 4, 393227, 0, 4, 458763, 0, 4, 524299, 0, 4, 589835, 0, 4, 655371, 0, 4, 720907, 0, 4, 786443, 0, 4, 65548, 0, 4, 131084, 0, 4, 196620, 0, 4, 262156, 0, 4, 327692, 0, 4, 393228, 0, 4, 458764, 0, 4, 524300, 0, 4, 589836, 0, 4, 655372, 0, 4, 720908, 0, 4, 786444, 0, 4, 65549, 0, 4, 131085, 0, 4, 196621, 0, 4, 262157, 0, 4, 327693, 0, 4, 393229, 0, 4, 458765, 0, 4, 524301, 0, 4, 589837, 0, 4, 655373, 0, 4, 720909, 0, 4, 786445, 0, 4, 65550, 0, 4, 131086, 0, 4, 196622, 0, 4, 262158, 0, 4, 327694, 0, 4, 393230, 0, 4, 458766, 0, 4, 524302, 0, 4, 589838, 0, 4, 655374, 0, 4, 720910, 0, 4, 786446, 0, 4, 65551, 0, 4, 131087, 0, 4, 196623, 0, 4, 262159, 0, 4, 327695, 0, 4, 393231, 0, 4, 458767, 0, 4, 524303, 0, 4, 589839, 0, 4, 655375, 0, 4, 720911, 0, 4, 786447, 0, 4, 65552, 0, 4, 131088, 0, 4, 196624, 0, 4, 262160, 0, 4, 327696, 0, 4, 393232, 0, 4, 458768, 0, 4, 524304, 0, 4, 589840, 0, 4, 655376, 0, 4, 720912, 0, 4, 786448, 0, 4, 65553, 0, 4, 131089, 0, 4, 196625, 0, 4, 262161, 0, 4, 327697, 0, 4, 393233, 0, 4, 458769, 0, 4, 524305, 0, 4, 589841, 0, 4, 655377, 0, 4, 720913, 0, 4, 786449, 0, 4, 65554, 0, 4, 131090, 0, 4, 196626, 0, 4, 262162, 0, 4, 327698, 0, 4, 393234, 0, 4, 458770, 0, 4, 524306, 0, 4, 589842, 0, 4, 655378, 0, 4, 720914, 0, 4, 786450, 0, 4, 65555, 0, 4, 131091, 0, 4, 196627, 0, 4, 262163, 0, 4, 327699, 0, 4, 393235, 0, 4, 458771, 0, 4, 524307, 0, 4, 589843, 0, 4, 655379, 0, 4, 720915, 0, 4, 786451, 0, 4, 65556, 0, 4, 131092, 0, 4, 196628, 0, 4, 262164, 0, 4, 327700, 0, 4, 393236, 0, 4, 458772, 0, 4, 524308, 0, 4, 589844, 0, 4, 655380, 0, 4, 720916, 0, 4, 786452, 0, 4, 65557, 0, 4, 131093, 0, 4, 196629, 0, 4, 262165, 0, 4, 327701, 0, 4, 393237, 0, 4, 458773, 0, 4, 524309, 0, 4, 589845, 0, 4, 655381, 0, 4, 720917, 0, 4, 786453, 0, 4, 0, 0, 4, 65536, 0, 4, 131072, 0, 4, 196608, 0, 4, 262144, 0, 4, 327680, 0, 4, 393216, 0, 4, 458752, 0, 4, 524288, 0, 4, 589824, 0, 4, 655360, 0, 4, 720896, 0, 4, 786432, 0, 4, 1, 0, 4, 2, 0, 4, 3, 0, 4, 4, 0, 4, 5, 0, 4, 6, 0, 4, 7, 0, 4, 8, 0, 4, 9, 0, 4, 10, 0, 4, 11, 0, 4, 12, 0, 4, 13, 0, 4, 14, 0, 4, 15, 0, 4, 16, 0, 4, 17, 0, 4, 18, 0, 4, 19, 0, 4, 20, 0, 4, 21, 0, 4)
+layer_1/name = "Walls"
+layer_1/enabled = true
+layer_1/modulate = Color(1, 1, 1, 1)
+layer_1/y_sort_enabled = false
+layer_1/y_sort_origin = 0
+layer_1/z_index = 0
+layer_1/tile_data = PackedInt32Array(0, 720896, 65540, 1, 720896, 65540, 2, 720896, 65540, 3, 720896, 65540, 4, 720896, 65540, 5, 720896, 65540, 6, 720896, 65540, 7, 720896, 65540, 8, 720896, 65540, 9, 720896, 65540, 10, 720896, 65540, 11, 720896, 65540, 12, 720896, 65540, 13, 720896, 65540, 14, 720896, 65540, 15, 720896, 65540, 16, 720896, 65540, 17, 720896, 65540, 18, 720896, 65540, 19, 720896, 65540, 20, 720896, 65540, 21, 720896, 65540, 65536, 720896, 4, 131072, 720896, 4, 196608, 720896, 4, 262144, 720896, 4, 327680, 720896, 4, 393216, 720896, 4, 458752, 720896, 4, 524288, 720896, 4, 589824, 720896, 4, 655360, 720896, 4, 720896, 720896, 4, 786432, 720896, 4, 65557, 589824, 4, 131093, 589824, 4, 196629, 589824, 4, 262165, 589824, 4, 327701, 589824, 4, 393237, 589824, 4, 458773, 589824, 4, 524309, 589824, 4, 589845, 589824, 4, 655381, 589824, 4, 720917, 589824, 4, 786453, 589824, 4, 786433, 589824, 65540, 786434, 589824, 65540, 786435, 589824, 65540, 786436, 589824, 65540, 786437, 589824, 65540, 786438, 589824, 65540, 786439, 589824, 65540, 786440, 589824, 65540, 786441, 589824, 65540, 786442, 589824, 65540, 786443, 589824, 65540, 786444, 589824, 65540, 786445, 589824, 65540, 786446, 589824, 65540, 786447, 589824, 65540, 786448, 589824, 65540, 786449, 589824, 65540, 786450, 589824, 65540, 786451, 589824, 65540, 786452, 589824, 65540, 65551, 655360, 4, 131087, 655360, 4, 196623, 655360, 4, 262159, 655360, 4, 327695, 655360, 4, 393231, 655360, 65540, 393232, 655360, 65540, 393233, 589824, 0, 393234, 655360, 65540, 393235, 655360, 65540, 393236, 655360, 65540, 720903, 655360, 4, 655367, 655360, 4, 589831, 655360, 4, 524295, 655360, 4, 458759, 655360, 4, 458758, 655360, 65540, 458757, 655360, 65540, 458753, 655360, 65540, 458754, 655360, 65540, 458756, 720896, 0, 458755, 655360, 0, 196616, 655360, 6, 589837, 655360, 6, 393227, 655360, 6, 196617, 0, 6, 196618, 65536, 6)
+
+[node name="Player" type="CharacterBody2D" parent="LitView" node_paths=PackedStringArray("linked_position_node")]
 position = Vector2(143, 86)
 motion_mode = 1
 script = ExtResource("4_jdj50")
-linked_position_node = NodePath("../VisibilityTest/VisibilitySource")
+linked_position_node = NodePath("../../VisibilityViewport/PointLight2d")
 
-[node name="Sprite2d" type="Sprite2D" parent="Player"]
+[node name="Sprite2d" type="Sprite2D" parent="LitView/Player"]
 texture = SubResource("AtlasTexture_7nfjy")
 
-[node name="CollisionShape2d" type="CollisionShape2D" parent="Player"]
+[node name="CollisionShape2d" type="CollisionShape2D" parent="LitView/Player"]
 position = Vector2(-0.5, 4)
 shape = SubResource("RectangleShape2D_t5t06")
 
-[node name="PointLight2d" type="PointLight2D" parent="Player"]
+[node name="PointLight2d" type="PointLight2D" parent="LitView/Player"]
 energy = 0.5
 texture = SubResource("GradientTexture2D_73iik")
 texture_scale = 1.5
 
-[node name="Camera2d" type="Camera2D" parent="."]
-current = true
-smoothing_enabled = true
+[node name="Lights" type="Node" parent="LitView"]
+
+[node name="Torch" type="Sprite2D" parent="LitView/Lights"]
+material = SubResource("CanvasItemMaterial_w0n04")
+position = Vector2(53, 150)
+texture = SubResource("AtlasTexture_bqsx7")
+
+[node name="PointLight2d" type="PointLight2D" parent="LitView/Lights/Torch"]
+energy = 0.5
+shadow_enabled = true
+texture = SubResource("GradientTexture2D_cl040")
+texture_scale = 1.5
+
+[node name="Torch3" type="Sprite2D" parent="LitView/Lights"]
+material = SubResource("CanvasItemMaterial_w0n04")
+position = Vector2(282, 56)
+texture = SubResource("AtlasTexture_bqsx7")
+
+[node name="PointLight2d" type="PointLight2D" parent="LitView/Lights/Torch3"]
+energy = 0.5
+shadow_enabled = true
+texture = SubResource("GradientTexture2D_cl040")
+texture_scale = 1.5
+
+[node name="Torch4" type="Sprite2D" parent="LitView/Lights"]
+material = SubResource("CanvasItemMaterial_w0n04")
+position = Vector2(311, 167)
+texture = SubResource("AtlasTexture_bqsx7")
+
+[node name="PointLight2d" type="PointLight2D" parent="LitView/Lights/Torch4"]
+energy = 0.5
+shadow_enabled = true
+texture = SubResource("GradientTexture2D_cl040")
+texture_scale = 1.5
+
+[node name="Torch5" type="Sprite2D" parent="LitView/Lights"]
+material = SubResource("CanvasItemMaterial_w0n04")
+position = Vector2(170, 75)
+texture = SubResource("AtlasTexture_bqsx7")
+
+[node name="PointLight2d" type="PointLight2D" parent="LitView/Lights/Torch5"]
+energy = 0.5
+shadow_enabled = true
+texture = SubResource("GradientTexture2D_cl040")
+texture_scale = 1.5
+
+[node name="CanvasModulate" type="CanvasModulate" parent="LitView"]
+color = Color(0.12549, 0.12549, 0.12549, 1)

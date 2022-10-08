@@ -3,16 +3,20 @@ shader_type canvas_item;
 uniform vec2 screen_start;
 uniform vec2 screen_size;
 uniform vec2 tilemap_start;
-uniform vec2 tilemap_size;
+uniform vec2 mask_size;
+uniform sampler2D mask_texture;
 
 void fragment() {
-	//-25,-25 & 100,100
-	//0,0 & 150,150
-	vec2 size_ratio = screen_size / tilemap_size;
-	//vec2 screen_end = screen_start + screen_size;
-	//vec2 tilemap_end = tilemap_start + tilemap_size;
-	vec2 tilemap_start_screen = (tilemap_start - screen_start) / screen_size;
-	//vec2 tilemap_end_screen = (tilemap_end - screen_end) * size_ratio;
-	vec2 tilemap_uv = (SCREEN_UV - tilemap_start_screen) * size_ratio;
-	COLOR = vec4(tilemap_uv.x, tilemap_uv.y, 0.5, 1);
+	vec2 tm_top_left = tilemap_start / mask_size;
+	vec2 scale = screen_size / mask_size;
+	//vec2 scale = vec2(1.0, 1.0);
+	vec2 tilemap_uv = (SCREEN_UV * scale) - tm_top_left;
+	//COLOR = vec4(tilemap_uv.x, tilemap_uv.y, 0.0, 1);
+	if (texture(mask_texture, tilemap_uv).r < 0.5) {
+		COLOR = texture(TEXTURE, UV);
+	} else {
+		discard;
+	}
+	//COLOR = texture(mask_texture, tilemap_uv);
+	//COLOR = texture(TEXTURE, UV);
 }
